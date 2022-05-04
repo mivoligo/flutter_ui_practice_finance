@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spending_summary.dart';
 import '../widgets/total_spending.dart';
 
 class ChartScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class ChartScreen extends StatelessWidget {
     return Column(
       children: [
         // SpendingTypes(),
-        // SpendingSummary(),
+        SpendingSummary(),
         // SpendingChart(),
         TotalSpending(),
       ],
