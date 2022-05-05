@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spending_chart.dart';
 import '../widgets/spending_summary.dart';
 import '../widgets/spending_types.dart';
 import '../widgets/total_spending.dart';
@@ -16,7 +17,7 @@ class ChartScreen extends StatelessWidget {
           child: SpendingTypes(),
         ),
         SpendingSummary(),
-        // SpendingChart(),
+        Expanded(child: SpendingChart()),
         TotalSpending(),
       ],
     );
