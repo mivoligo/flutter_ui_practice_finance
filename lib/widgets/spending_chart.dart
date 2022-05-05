@@ -11,6 +11,7 @@ class SpendingChart extends StatelessWidget {
     return Column(
       children: const [
         _ChartHeader(),
+        SizedBox(height: 12),
         Expanded(child: _Chart()),
       ],
     );
@@ -68,8 +69,15 @@ class _ChartHeader extends StatelessWidget {
   }
 }
 
-class _Chart extends StatelessWidget {
+class _Chart extends StatefulWidget {
   const _Chart({Key? key}) : super(key: key);
+
+  @override
+  State<_Chart> createState() => _ChartState();
+}
+
+class _ChartState extends State<_Chart> {
+  int tapIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +87,12 @@ class _Chart extends StatelessWidget {
         gridData: FlGridData(show: false),
         // remove the borders
         borderData: FlBorderData(
-          show: false,
+          border: const Border(
+            bottom: BorderSide(
+              width: 1,
+              color: Color(0xFFECECEC),
+            ),
+          ),
         ),
         // titles
         titlesData: FlTitlesData(
@@ -99,13 +112,31 @@ class _Chart extends StatelessWidget {
                 final day = spendings[value.toInt()].day;
                 return Padding(
                   padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(day),
+                  child: Text(
+                    day,
+                    style: TextStyle(
+                      color: tapIndex == value.toInt()
+                          ? Colors.black
+                          : Colors.grey.shade400,
+                    ),
+                  ),
                 );
               },
             ),
           ),
         ),
         maxY: maxValue.toDouble(),
+        barTouchData: BarTouchData(
+          touchCallback: (event, response) {
+            if (response != null && event is FlTapUpEvent) {
+              setState(() {
+                if (response.spot != null) {
+                  tapIndex = response.spot!.touchedBarGroupIndex;
+                }
+              });
+            }
+          },
+        ),
         barGroups: [
           for (int i = 0; i < spendings.length; i++)
             BarChartGroupData(
@@ -113,6 +144,14 @@ class _Chart extends StatelessWidget {
               barRods: [
                 BarChartRodData(
                   toY: spendings[i].spending.toDouble(),
+                  color: tapIndex == i
+                      ? const Color(0xFF17D77C)
+                      : const Color(0xFFECECEC),
+                  width: 16,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                  ),
                 ),
               ],
             )

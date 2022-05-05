@@ -12,13 +12,24 @@ class ChartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 40,
           child: SpendingTypes(),
         ),
-        SpendingSummary(),
-        Expanded(child: SpendingChart()),
-        TotalSpending(),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: const [
+                SpendingSummary(),
+                SizedBox(height: 12),
+                Expanded(child: SpendingChart()),
+                SizedBox(height: 12),
+                TotalSpending(),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
